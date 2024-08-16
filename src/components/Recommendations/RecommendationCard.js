@@ -6,7 +6,7 @@ export const RecommendationCard = ({ resource }) => {
   const { title, author, type, description, imageUrl } = resource;
 
   return (
-    <Card>
+    <Card sx={{height: '100%'}}>
       <LazyLoad height={200} offset={100}>
         <CardMedia
           component="img"

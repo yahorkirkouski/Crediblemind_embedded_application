@@ -1,43 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import { Grid, Typography } from '@mui/material';
+import React, { useEffect } from 'react';
+import { Grid, Typography, Box } from '@mui/material';
 import { RecommendationCard } from './RecommendationCard';
 import { useStore } from '../../store';
-import { fetchRecommendations } from '../../services';
+import { useFetchRecommendations } from '../../hooks';
 import { formatUserAnswersToFacetFilters } from '../../utils';
+import { RecommendationCardSkeleton } from "./RecommendationCardSkeleton";
 
 export const Recommendations = () => {
-  const [recommendations, setRecommendations] = useState([]);
   const {state} = useStore();
+  const facetFilters = formatUserAnswersToFacetFilters(state);
+  const { recommendations, loading, error, fetchRecommendations } = useFetchRecommendations(facetFilters);
 
   useEffect(() => {
-    const facetFilters = formatUserAnswersToFacetFilters(state);
+    fetchRecommendations();
+  }, []);
 
-    if (facetFilters.length) {
-      fetchRecommendations(facetFilters)
-        .then(({hits}) => {
-          setRecommendations(hits);
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    }
-  }, [state]);
+  if (error) return <Box>Error loading recommendations: {error.message}</Box>;
 
   return (
-    <div>
+    <Box>
       <Typography variant="h4" gutterBottom>
         Recommended Resources:
       </Typography>
-      <Grid container spacing={3}>
-        {Boolean(recommendations && recommendations.length) ? recommendations.map((resource, index) => (
+      <Grid container spacing={2}>
+        {loading && ( Array.from(new Array(4)).map((_, index) => (
+          <Grid item xs={12} sm={6} md={4} key={index}>
+            <RecommendationCardSkeleton />
+          </Grid>
+        )))}
+        {Boolean(recommendations && recommendations.length) && recommendations.map((resource, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
             <RecommendationCard resource={resource}/>
           </Grid>
-        )) : <Grid item xs={12} sm={6} md={4}>
-          <RecommendationCard resource={{title: 'No cards'}}/>
-        </Grid>
-        }
+        ))}
       </Grid>
-    </div>
+    </Box>
   );
 }
