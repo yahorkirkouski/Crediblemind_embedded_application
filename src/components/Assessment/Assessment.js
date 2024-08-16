@@ -4,6 +4,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { useStore } from '../../store';
 import { Question } from '../Question';
 import { calcTimeOnPassing } from '../../utils';
+import { QUESTION_TYPES } from '../../constants';
 
 export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -104,7 +105,7 @@ export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
             questionNumber={index + 1}
             question={question}
             onChange={handleChange}
-            value={state[question.name]?.value || (question.type === 'checkbox' ? [] : '')}
+            value={state[question.name]?.value || (question.type === QUESTION_TYPES.checkbox ? [] : '')}
             error={errors[question.name]}
           />
         ))}

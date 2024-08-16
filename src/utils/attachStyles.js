@@ -12,9 +12,7 @@ export const getStylesCache = () => {
 const attachStyles = () => {
   const shadow = document.querySelector('crediblemind-assessment').shadowRoot;
   const headElement = document.createElement("head");
-  const rootElement = document.createElement("div");
 
   shadow.appendChild(headElement);
-  shadow.appendChild(rootElement);
   return headElement;
 }

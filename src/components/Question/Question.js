@@ -11,6 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useStore } from "../../store";
+import { QUESTION_TYPES } from '../../constants';
 
 export const Question = ({ question, onChange, value, pageNumber, questionNumber, error }) => {
   const { type, title, choices, labelTrue, labelFalse, isRequired, name } = question;
@@ -19,7 +20,7 @@ export const Question = ({ question, onChange, value, pageNumber, questionNumber
 
   const handleInputChange = (type) => (event) => {
     const { name, value, checked } = event.target;
-    if (type === 'checkbox') {
+    if (type === QUESTION_TYPES.checkbox) {
       let updatedValue = state[name]?.value ? [...state[name].value] : [];
       if (checked) {
         updatedValue.push(value);
@@ -52,11 +53,11 @@ export const Question = ({ question, onChange, value, pageNumber, questionNumber
       error={!!error}
     >
       <FormLabel component="legend">{questionTitle}</FormLabel>
-      {type === 'radiogroup' && (
+      {type === QUESTION_TYPES.radioGroup && (
         <RadioGroup
           name={name}
           value={value}
-          onChange={handleInputChange('radiogroup')}
+          onChange={handleInputChange(type)}
           aria-describedby={error ? `${name}-error` : undefined}
         >
           {choices.map((choice, index) => (
@@ -69,7 +70,7 @@ export const Question = ({ question, onChange, value, pageNumber, questionNumber
           ))}
         </RadioGroup>
       )}
-      {type === 'checkbox' && (
+      {type === QUESTION_TYPES.checkbox && (
         <FormGroup>
           {choices.map((choice, index) => (
             <FormControlLabel
@@ -78,7 +79,7 @@ export const Question = ({ question, onChange, value, pageNumber, questionNumber
                 <Checkbox
                   name={name}
                   checked={value.includes(choice)}
-                  onChange={handleInputChange('checkbox')}
+                  onChange={handleInputChange(type)}
                   value={choice}
                 />
               }
@@ -87,7 +88,7 @@ export const Question = ({ question, onChange, value, pageNumber, questionNumber
           ))}
         </FormGroup>
       )}
-      {type === 'text' && (
+      {type === QUESTION_TYPES.text && (
         <TextField
           name={name}
           multiline
@@ -95,18 +96,18 @@ export const Question = ({ question, onChange, value, pageNumber, questionNumber
           margin="normal"
           variant="outlined"
           value={value}
-          onChange={handleInputChange('text')}
+          onChange={handleInputChange(type)}
           error={!!error}
           helperText={error}
           aria-describedby={error ? `${name}-error` : undefined}
         />
       )}
-      {type === 'boolean' && (
+      {type === QUESTION_TYPES.boolean && (
         <RadioGroup
           row
           name={name}
           value={value}
-          onChange={handleInputChange('boolean')}
+          onChange={handleInputChange(type)}
           aria-describedby={error ? `${name}-error` : undefined}
         >
           <FormControlLabel value="true" control={<Radio />} label={labelTrue} />

@@ -29,11 +29,9 @@ export const App = ({data, bar = 'shown'}) => {
   //   return <p>Data invalid!</p>
   // }
 
-
   const formattedData = data ? JSON.parse(data)[0] : MOCK_DATA[0];
 
   const stylesCache = getStylesCache();
-
 
   const handleFormSubmit = () => {
     setIsSubmitted(true);

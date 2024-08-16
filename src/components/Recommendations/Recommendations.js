@@ -3,12 +3,12 @@ import { Grid, Typography, Box } from '@mui/material';
 import { RecommendationCard } from './RecommendationCard';
 import { useStore } from '../../store';
 import { useFetchRecommendations } from '../../hooks';
-import { formatUserAnswersToFacetFilters } from '../../utils';
+import { formatAnswersToFacetFilters } from '../../utils';
 import { RecommendationCardSkeleton } from "./RecommendationCardSkeleton";
 
 export const Recommendations = () => {
   const {state} = useStore();
-  const facetFilters = formatUserAnswersToFacetFilters(state);
+  const facetFilters = formatAnswersToFacetFilters(state);
   const { recommendations, loading, error, fetchRecommendations } = useFetchRecommendations(facetFilters);
 
   useEffect(() => {
