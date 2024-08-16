@@ -1,6 +1,6 @@
 {
   "name": "crediblemind-assessment",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "private": false,
   "homepage": "/",
   "main": "build/static/js/main.js",

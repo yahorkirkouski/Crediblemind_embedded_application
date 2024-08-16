@@ -25,9 +25,9 @@ export const App = ({data, bar = 'shown'}) => {
     };
   }, [])
 
-  // @TODO: uncomment when publish if (!isStringJson(data)) {
-  //   return <p>Data invalid!</p>
-  // }
+  if (!isStringJson(data)) {
+    return <p>Data invalid!</p>
+  }
 
   const formattedData = data ? JSON.parse(data)[0] : MOCK_DATA[0];
 
