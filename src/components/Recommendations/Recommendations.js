@@ -28,12 +28,12 @@ export const Recommendations = () => {
             <RecommendationCardSkeleton />
           </Grid>
         )))}
-        {Boolean(recommendations && recommendations.length) ? recommendations.map((resource, index) => (
+        {Boolean(recommendations && recommendations.length) && recommendations.map((resource, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
             <RecommendationCard resource={resource}/>
           </Grid>
-        )) : (
-          <Grid item xs={12} sm={6} md={4}>
+        ))}
+        {Boolean(!loading && recommendations && !recommendations.length) && (<Grid item xs={12} sm={6} md={4}>
             <RecommendationCard resource={{title: 'No Hints'}}/>
           </Grid>
         )}

@@ -8,6 +8,7 @@ import { calcTimeOnPassing } from '../../utils';
 export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [errors, setErrors] = useState({});
   const { state, dispatch } = useStore();
 
   const totalPages = questions.pages.length;
@@ -17,11 +18,17 @@ export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
 
   const validatePage = () => {
     const currentQuestions = questions.pages[currentPage].elements;
-    return currentQuestions.every((question) => {
-        return state[question.name]?.value &&
-          (Array.isArray(state[question.name].value) ? state[question.name].value.length > 0 : state[question.name].value.trim() !== '');
+    const newErrors = {};
 
+    currentQuestions.forEach((question) => {
+      if (!state[question.name]?.value ||
+        (Array.isArray(state[question.name].value) ? state[question.name].value.length === 0 : state[question.name].value.trim() === '')) {
+        newErrors[question.name] = 'This field is required';
+      }
     });
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
 
@@ -40,6 +47,7 @@ export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
   };
 
   const handleError = () => {
+    validatePage();
     setShowErrorMessage(true);
   };
 
@@ -89,16 +97,17 @@ export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
         </Box>
       )}
       <Box display="flex" flexDirection="column" alignItems="start">
-      {questions.pages[currentPage].elements.map((question, index) => (
-        <Question
-          key={index}
-          pageNumber={currentPage + 1}
-          questionNumber={index + 1}
-          question={question}
-          onChange={handleChange}
-          value={state[question.name]?.value || (question.type === 'checkbox' ? [] : '')}
-        />
-      ))}
+        {questions.pages[currentPage].elements.map((question, index) => (
+          <Question
+            key={index}
+            pageNumber={currentPage + 1}
+            questionNumber={index + 1}
+            question={question}
+            onChange={handleChange}
+            value={state[question.name]?.value || (question.type === 'checkbox' ? [] : '')}
+            error={errors[question.name]}
+          />
+        ))}
       </Box>
       {showErrorMessage && <Alert severity="error">
         Please answer all the questions on this page
