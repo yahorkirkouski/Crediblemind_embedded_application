@@ -6,6 +6,10 @@ const searchClient = liteClient(
 );
 const index = searchClient.initIndex('algolia-recommendation-data');
 
-export const fetchRecommendations = (facetFilters) => {
-  return index.search('', {facetFilters: [facetFilters]});
+export const fetchRecommendations = async (facetFilters) => {
+  try {
+    return await index.search('', { facetFilters: [facetFilters] });
+  } catch (error) {
+    console.error('Error fetching recommendations:', error);
+  }
 };

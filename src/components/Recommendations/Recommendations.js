@@ -7,14 +7,14 @@ import { formatUserAnswersToFacetFilters } from '../../utils';
 
 export const Recommendations = () => {
   const [recommendations, setRecommendations] = useState([]);
-  const { state } = useStore();
+  const {state} = useStore();
 
   useEffect(() => {
     const facetFilters = formatUserAnswersToFacetFilters(state);
 
     if (facetFilters.length) {
       fetchRecommendations(facetFilters)
-        .then(({ hits }) => {
+        .then(({hits}) => {
           setRecommendations(hits);
         })
         .catch(err => {
@@ -29,12 +29,15 @@ export const Recommendations = () => {
         Recommended Resources:
       </Typography>
       <Grid container spacing={3}>
-        {recommendations?.map((resource, index) => (
+        {Boolean(recommendations && recommendations.length) ? recommendations.map((resource, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
-            <RecommendationCard resource={resource} />
+            <RecommendationCard resource={resource}/>
           </Grid>
-        ))}
+        )) : <Grid item xs={12} sm={6} md={4}>
+          <RecommendationCard resource={{title: 'No cards'}}/>
+        </Grid>
+        }
       </Grid>
     </div>
   );
-};
+}
