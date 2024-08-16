@@ -1,4 +1,4 @@
-import createCache from "@emotion/cache";
+import createCache from '@emotion/cache';
 
 export const getStylesCache = () => {
   const headElement = attachStyles();

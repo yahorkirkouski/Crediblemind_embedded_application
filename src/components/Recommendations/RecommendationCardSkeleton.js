@@ -19,5 +19,5 @@ export const RecommendationCardSkeleton = () => {
         </Typography>
       </CardContent>
     </Card>
-  )
-}
+  );
+};

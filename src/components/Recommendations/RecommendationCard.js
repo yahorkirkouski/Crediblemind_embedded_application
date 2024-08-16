@@ -13,9 +13,11 @@ export const RecommendationCard = ({ resource }) => {
   return (
     <Card sx={{height: '100%'}}>
       <LazyLoad height={200} offset={100}>
-        {noImage ? <Box height={200} display="flex" justifyContent="center" alignItems="center">
+        {noImage ?
+          <Box height={200} display="flex" justifyContent="center" alignItems="center">
             <Typography>No Image</Typography>
-          </Box> :
+          </Box>
+          :
           <CardMedia
             component="img"
             height="140"

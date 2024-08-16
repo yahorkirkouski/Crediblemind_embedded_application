@@ -1,10 +1,10 @@
 import { MOCK_DATA } from './mock';
 import React, { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
-import { Results, Assessment, Introduction } from "./components";
+import { Results, Assessment, Introduction } from './components';
 
-import { CacheProvider } from "@emotion/react";
-import { StoreProvider } from "./store";
+import { CacheProvider } from '@emotion/react';
+import { StoreProvider } from './store';
 import { getStylesCache, isStringJson } from './utils';
 import './index.css'
 

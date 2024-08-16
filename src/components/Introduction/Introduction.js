@@ -1,7 +1,10 @@
-import React, { useState } from "react";
-import { Button, Typography } from "@mui/material";
+import React, { useState } from 'react';
+import { Button, Typography } from '@mui/material';
+
+import { useStyles } from './Introduction.styles';
 
 export const Introduction = ({ intro }) => {
+  const styles = useStyles();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleReadMore = () => {
@@ -23,14 +26,7 @@ export const Introduction = ({ intro }) => {
               {fullText.length > 100 && (
                 <Button
                   onClick={toggleReadMore}
-                  sx={{
-                    padding: 0,
-                    marginLeft: '8px',
-                    textTransform: 'none',
-                    fontSize: 'inherit',
-                    fontWeight: 'normal',
-                    verticalAlign: 'baseline',
-                  }}
+                  className={styles.button}
                   variant="text"
                   color="primary"
                 >

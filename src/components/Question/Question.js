@@ -8,9 +8,9 @@ import {
   RadioGroup,
   Checkbox,
   TextField,
-  Typography,
 } from '@mui/material';
-import { useStore } from "../../store";
+import { useStore } from '../../store';
+import { ErrorMessage } from './ErrorMessage';
 import { QUESTION_TYPES } from '../../constants';
 
 export const Question = ({ question, onChange, value, pageNumber, questionNumber, error }) => {
@@ -21,28 +21,21 @@ export const Question = ({ question, onChange, value, pageNumber, questionNumber
   const handleInputChange = (type) => (event) => {
     const { name, value, checked } = event.target;
     if (type === QUESTION_TYPES.checkbox) {
-      let updatedValue = state[name]?.value ? [...state[name].value] : [];
-      if (checked) {
-        updatedValue.push(value);
-      } else {
-        updatedValue = updatedValue.filter((item) => item !== value);
-      }
-      onChange(name, updatedValue, type);
+      handleCheckboxChange(name, value, checked)
     } else {
       onChange(name, value, type);
     }
   };
 
-  const renderErrorMessage = () => {
-    if (error) {
-      return (
-        <Typography color="error" role="alert" aria-live="assertive">
-          {error}
-        </Typography>
-      );
+  const handleCheckboxChange = (name, value, checked) => {
+    let updatedValue = state[name]?.value ? [...state[name].value] : [];
+    if (checked) {
+      updatedValue.push(value);
+    } else {
+      updatedValue = updatedValue.filter((item) => item !== value);
     }
-    return null;
-  };
+    onChange(name, updatedValue, type);
+  }
 
   return (
     <FormControl
@@ -114,7 +107,7 @@ export const Question = ({ question, onChange, value, pageNumber, questionNumber
           <FormControlLabel value="false" control={<Radio />} label={labelFalse} />
         </RadioGroup>
       )}
-      {renderErrorMessage()}
+      <ErrorMessage error={error} />
     </FormControl>
   );
 };

@@ -22,14 +22,15 @@ export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
     const newErrors = {};
 
     currentQuestions.forEach((question) => {
-      if (!state[question.name]?.value ||
-        (Array.isArray(state[question.name].value) ? state[question.name].value.length === 0 : state[question.name].value.trim() === '')) {
+      const answer = state[question.name]?.value;
+      const type = state[question.name]?.type;
+      if (!answer || type === QUESTION_TYPES.checkbox ? !answer?.length : !answer.trim()) {
         newErrors[question.name] = 'This field is required';
       }
     });
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return !Object.keys(newErrors).length;
   };
 
 
@@ -42,9 +43,9 @@ export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
     setShowErrorMessage(false);
     if (isLastPage) {
       handleComplete();
-    } else {
-      goToNextPage();
+      return;
     }
+    goToNextPage();
   };
 
   const handleError = () => {
@@ -68,7 +69,7 @@ export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
     handleChangePage(currentPage - 1);
   };
 
-  const handleChange = (questionName, answer, type) => {
+  const handleChangeAnswer = (questionName, answer, type) => {
     dispatch({
       type: 'SET_ANSWER',
       payload: { questionName, answer, type },
@@ -104,15 +105,17 @@ export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
             pageNumber={currentPage + 1}
             questionNumber={index + 1}
             question={question}
-            onChange={handleChange}
+            onChange={handleChangeAnswer}
             value={state[question.name]?.value || (question.type === QUESTION_TYPES.checkbox ? [] : '')}
             error={errors[question.name]}
           />
         ))}
       </Box>
-      {showErrorMessage && <Alert severity="error">
-        Please answer all the questions on this page
-      </Alert>}
+      {showErrorMessage && (
+        <Alert severity="error">
+          Please answer all the questions on this page
+        </Alert>
+      )}
       <Box mt={2} display="flex" justifyContent={isFirstPage ? "flex-end" : "space-between"}>
         {!isFirstPage && (
           <Button variant="contained" onClick={handlePrev}>
