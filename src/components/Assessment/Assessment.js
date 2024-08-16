@@ -34,7 +34,7 @@ export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
 
     setShowErrorMessage(false);
     if (isLastPage) {
-      handleSubmit();
+      handleComplete();
     } else {
       goToNextPage();
     }
@@ -44,13 +44,20 @@ export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
     setShowErrorMessage(true);
   };
 
+  const handleChangePage = (newPage) => {
+    setCurrentPage(newPage);
+    const event = new CustomEvent('onPageChanged', {
+      detail: { currentPage: newPage }
+    });
+    document.dispatchEvent(event);
+  };
+
   const goToNextPage = () => {
-    setCurrentPage(currentPage + 1);
+    handleChangePage(currentPage + 1);
   }
 
-  // Handle navigation to previous page
   const handlePrev = () => {
-    setCurrentPage(currentPage - 1);
+    handleChangePage(currentPage - 1);
   };
 
   // Update store with the current answer
@@ -62,8 +69,12 @@ export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
   };
 
   // Handle form submission
-  const handleSubmit = () => {
-    onSubmit(); // Trigger parent component's submit logic
+  const handleComplete = () => {
+    const event = new CustomEvent('onCompletion', {
+      detail: { answers: state }
+    });
+    document.dispatchEvent(event);
+    onSubmit();
   };
 
   return (
