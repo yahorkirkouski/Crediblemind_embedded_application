@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import { MOCK_DATA } from './mock';
+import React, { useState } from 'react';
+import {
+  Box,
+} from '@mui/material';
+import './index.css'
 
-function App() {
+import { StoreProvider } from './store';
+
+import { Results, Assessment, Introduction } from "./components";
+
+
+export const App = ({data, showProgressBar}) => {
+  const formattedData = data ? JSON.parse(data)[0] : MOCK_DATA[0];
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleFormSubmit = () => {
+    setIsSubmitted(true);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <StoreProvider>
+      <Box p={4}>
+        {!isSubmitted ? (
+          <>
+            <Introduction intro={formattedData.intro} />
+            <Assessment questions={formattedData.questions} onSubmit={handleFormSubmit} />
+          </>
+        ) : (
+          <Results resultsIntro={formattedData.resultsIntro} />
+        )}
+      </Box>
+    </StoreProvider>
   );
-}
+};
 
-export default App;
