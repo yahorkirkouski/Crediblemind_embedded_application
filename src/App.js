@@ -1,15 +1,14 @@
 import { MOCK_DATA } from './mock';
 import React, { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
-import './index.css'
-
-import { StoreProvider } from './store';
-
 import { Results, Assessment, Introduction } from "./components";
 
+import { CacheProvider } from "@emotion/react";
+import { StoreProvider } from "./store";
+import { getStylesCache, isStringJson } from './utils';
+import './index.css'
 
-export const App = ({data, showProgressBar}) => {
-  const formattedData = data ? JSON.parse(data)[0] : MOCK_DATA[0];
+export const App = ({data, bar = 'shown'}) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
@@ -26,22 +25,34 @@ export const App = ({data, showProgressBar}) => {
     };
   }, [])
 
+  // @TODO: uncomment when publish if (!isStringJson(data)) {
+  //   return <p>Data invalid!</p>
+  // }
+
+
+  const formattedData = data ? JSON.parse(data)[0] : MOCK_DATA[0];
+
+  const stylesCache = getStylesCache();
+
+
   const handleFormSubmit = () => {
     setIsSubmitted(true);
   };
 
   return (
     <StoreProvider>
-      <Box p={4}>
-        {!isSubmitted ? (
-          <>
-            <Introduction intro={formattedData.intro} />
-            <Assessment questions={formattedData.questions} onSubmit={handleFormSubmit} />
-          </>
-        ) : (
-          <Results resultsIntro={formattedData.resultsIntro} />
-        )}
-      </Box>
+      <CacheProvider value={stylesCache}>
+        <Box p={4}>
+          {!isSubmitted ? (
+            <>
+              <Introduction intro={formattedData.intro} />
+              <Assessment questions={formattedData.questions} onSubmit={handleFormSubmit} showProgressBar={bar === "shown"} />
+            </>
+          ) : (
+            <Results resultsIntro={formattedData.resultsIntro} />
+          )}
+        </Box>
+      </CacheProvider >
     </StoreProvider>
   );
 };

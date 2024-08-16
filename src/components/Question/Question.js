@@ -32,8 +32,8 @@ export const Question = ({ question, onChange, value }) => {
   };
 
   return (
-    <FormControl component="fieldset" margin="normal" required={isRequired}>
-      <FormLabel component="legend">{title}</FormLabel>
+    <FormControl component="fieldset" fullWidth margin="normal" required={isRequired}>
+      {type !== 'text' && <FormLabel component="legend">{title}</FormLabel>}
       {type === 'radiogroup' && (
         <RadioGroup name={name} value={value} onChange={handleInputChange('radiogroup')}>
           {choices.map((choice, index) => (

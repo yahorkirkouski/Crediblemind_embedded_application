@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { Box, Button, LinearProgress, Typography } from '@mui/material';
+import { Box, Button, LinearProgress, Typography, Alert } from '@mui/material';
 import { useStore } from '../../store';
 import { Question } from '../Question';
-import { useStyles } from './Assessment.styles';
 
 export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
-  const styles = useStyles();
   const [currentPage, setCurrentPage] = useState(0);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const { state, dispatch } = useStore();
@@ -13,6 +11,7 @@ export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
   const totalPages = questions.pages.length;
   const progress = (currentPage / totalPages) * 100;
   const isLastPage = currentPage >= totalPages - 1;
+  const isFirstPage = currentPage === 0;
 
   const validatePage = () => {
     const currentQuestions = questions.pages[currentPage].elements;
@@ -78,7 +77,7 @@ export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
   };
 
   return (
-    <Box mb={4}>
+    <Box mb={4} >
       {showProgressBar && (
         <Box mb={2}>
           <Typography variant="body2" color="textSecondary">
@@ -87,6 +86,7 @@ export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
           <LinearProgress variant="determinate" value={progress} />
         </Box>
       )}
+      <Box display="flex" flexDirection="column" alignItems="start">
       {questions.pages[currentPage].elements.map((question, index) => (
         <Question
           key={index}
@@ -95,9 +95,12 @@ export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
           value={state[question.name]?.value || (question.type === 'checkbox' ? [] : '')} // Default value for checkboxes
         />
       ))}
-      {showErrorMessage && <Box p={1} display="flex" justifyContent="center" alignItems="center" className={styles.error} >Please answer all the questions on this page</Box>}
-      <Box mt={2} display="flex" justifyContent="space-between">
-        {currentPage > 0 && (
+      </Box>
+      {showErrorMessage && <Alert severity="error">
+        Please answer all the questions on this page
+      </Alert>}
+      <Box mt={2} display="flex" justifyContent={isFirstPage ? "flex-end" : "space-between"}>
+        {!isFirstPage && (
           <Button variant="contained" onClick={handlePrev}>
             Previous
           </Button>
