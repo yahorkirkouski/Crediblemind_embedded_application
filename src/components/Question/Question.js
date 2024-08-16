@@ -107,7 +107,7 @@ export const Question = ({ question, onChange, value, pageNumber, questionNumber
           <FormControlLabel value="false" control={<Radio />} label={labelFalse} />
         </RadioGroup>
       )}
-      <ErrorMessage error={error} />
+      {!isRequired && <ErrorMessage error={error} />}
     </FormControl>
   );
 };
