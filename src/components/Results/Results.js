@@ -1,5 +1,3 @@
-
-// Results Component
 import React from "react";
 
 import {

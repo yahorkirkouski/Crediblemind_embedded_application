@@ -18,12 +18,11 @@ export const Question = ({ question, onChange, value }) => {
   const handleInputChange = (type) => (event) => {
     const { name, value, checked } = event.target;
     if (type === 'checkbox') {
-      // Handle checkbox by adding/removing value from array
-      let updatedValue = state[name]?.value ? [...state[name].value] : []; // Copy current value array
+      let updatedValue = state[name]?.value ? [...state[name].value] : [];
       if (checked) {
-        updatedValue.push(value); // Add checked value
+        updatedValue.push(value);
       } else {
-        updatedValue = updatedValue.filter((item) => item !== value); // Remove unchecked value
+        updatedValue = updatedValue.filter((item) => item !== value);
       }
       onChange(name, updatedValue, type);
     } else {
@@ -49,7 +48,7 @@ export const Question = ({ question, onChange, value }) => {
               control={
                 <Checkbox
                   name={name}
-                  checked={value.includes(choice)} // Check if the current value is in the array
+                  checked={value.includes(choice)}
                   onChange={handleInputChange('checkbox')}
                   value={choice}
                 />

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Box, Button, LinearProgress, Typography, Alert } from '@mui/material';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { useStore } from '../../store';
 import { Question } from '../Question';
+import { calcTimeOnPassing } from '../../utils';
 
 export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -59,7 +61,6 @@ export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
     handleChangePage(currentPage - 1);
   };
 
-  // Update store with the current answer
   const handleChange = (questionName, answer, type) => {
     dispatch({
       type: 'SET_ANSWER',
@@ -67,7 +68,6 @@ export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
     });
   };
 
-  // Handle form submission
   const handleComplete = () => {
     const event = new CustomEvent('onCompletion', {
       detail: { answers: state }
@@ -78,6 +78,10 @@ export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
 
   return (
     <Box mb={4} >
+      <Box display="flex" alignItems="center" >
+        <AccessTimeIcon style={{fontSize: 14}} mb={1} />
+        <Typography variant="body2" ml={0.5} my={1} pt={0.3}>{`Takes only ${calcTimeOnPassing(questions)}`}</Typography>
+      </Box>
       {showProgressBar && (
         <Box mb={2}>
           <Typography variant="body2" color="textSecondary">
@@ -92,7 +96,7 @@ export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
           key={index}
           question={question}
           onChange={handleChange}
-          value={state[question.name]?.value || (question.type === 'checkbox' ? [] : '')} // Default value for checkboxes
+          value={state[question.name]?.value || (question.type === 'checkbox' ? [] : '')}
         />
       ))}
       </Box>

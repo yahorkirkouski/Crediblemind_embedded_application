@@ -7,12 +7,11 @@ import { formatUserAnswersToFacetFilters } from '../../utils';
 
 export const Recommendations = () => {
   const [recommendations, setRecommendations] = useState([]);
-  const { state } = useStore(); // Access state
+  const { state } = useStore();
 
   useEffect(() => {
     const facetFilters = formatUserAnswersToFacetFilters(state);
 
-    // Only fetch recommendations if all necessary answers are available
     if (facetFilters.length) {
       fetchRecommendations(facetFilters)
         .then(({ hits }) => {

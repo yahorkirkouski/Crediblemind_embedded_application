@@ -13,7 +13,7 @@ export const RecommendationCard = ({ resource }) => {
           height="140"
           image={imageUrl || '/assets/fallbackImage.jpg'}
           alt={title}
-          onError={(e) => { e.target.src = '/assets/fallbackImage.jpg'; }} // Fallback image
+          onError={(e) => { e.target.src = '/assets/fallbackImage.jpg'; }}
         />
       </LazyLoad>
       <CardContent>
