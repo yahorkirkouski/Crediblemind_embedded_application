@@ -1,4 +1,3 @@
-import { MOCK_DATA } from './mock';
 import React, { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import { Results, Assessment, Introduction } from './components';
@@ -29,7 +28,7 @@ export const App = ({data, bar = 'shown'}) => {
     return <p>Data invalid!</p>
   }
 
-  const formattedData = data ? JSON.parse(data)[0] : MOCK_DATA[0];
+  const formattedData = JSON.parse(data)[0];
 
   const stylesCache = getStylesCache();
 
