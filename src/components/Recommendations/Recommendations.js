@@ -19,7 +19,7 @@ export const Recommendations = () => {
 
   return (
     <Box>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" mb={4} gutterBottom>
         Recommended Resources:
       </Typography>
       <Grid container spacing={2}>
@@ -28,11 +28,15 @@ export const Recommendations = () => {
             <RecommendationCardSkeleton />
           </Grid>
         )))}
-        {Boolean(recommendations && recommendations.length) && recommendations.map((resource, index) => (
+        {Boolean(recommendations && recommendations.length) ? recommendations.map((resource, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
             <RecommendationCard resource={resource}/>
           </Grid>
-        ))}
+        )) : (
+          <Grid item xs={12} sm={6} md={4}>
+            <RecommendationCard resource={{title: 'No Hints'}}/>
+          </Grid>
+        )}
       </Grid>
     </Box>
   );

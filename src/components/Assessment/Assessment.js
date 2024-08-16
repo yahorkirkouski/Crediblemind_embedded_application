@@ -18,11 +18,9 @@ export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
   const validatePage = () => {
     const currentQuestions = questions.pages[currentPage].elements;
     return currentQuestions.every((question) => {
-      if (question.isRequired) {
         return state[question.name]?.value &&
           (Array.isArray(state[question.name].value) ? state[question.name].value.length > 0 : state[question.name].value.trim() !== '');
-      }
-      return true;
+
     });
   };
 
@@ -94,6 +92,8 @@ export const Assessment = ({ questions, onSubmit, showProgressBar = true }) => {
       {questions.pages[currentPage].elements.map((question, index) => (
         <Question
           key={index}
+          pageNumber={currentPage + 1}
+          questionNumber={index + 1}
           question={question}
           onChange={handleChange}
           value={state[question.name]?.value || (question.type === 'checkbox' ? [] : '')}

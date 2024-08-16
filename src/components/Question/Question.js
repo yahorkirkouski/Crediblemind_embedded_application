@@ -11,9 +11,10 @@ import {
 } from '@mui/material';
 import { useStore } from "../../store";
 
-export const Question = ({ question, onChange, value }) => {
+export const Question = ({ question, onChange, value, pageNumber, questionNumber }) => {
   const { type, title, choices, labelTrue, labelFalse, isRequired, name } = question;
   const { state } = useStore();
+  const questionTitle = `${pageNumber}.${questionNumber} ${title}`;
 
   const handleInputChange = (type) => (event) => {
     const { name, value, checked } = event.target;
@@ -32,7 +33,7 @@ export const Question = ({ question, onChange, value }) => {
 
   return (
     <FormControl component="fieldset" fullWidth margin="normal" required={isRequired}>
-      {type !== 'text' && <FormLabel component="legend">{title}</FormLabel>}
+      <FormLabel component="legend">{questionTitle}</FormLabel>
       {type === 'radiogroup' && (
         <RadioGroup name={name} value={value} onChange={handleInputChange('radiogroup')}>
           {choices.map((choice, index) => (
@@ -60,7 +61,6 @@ export const Question = ({ question, onChange, value }) => {
       )}
       {type === 'text' && (
         <TextField
-          label={title}
           name={name}
           multiline
           fullWidth
